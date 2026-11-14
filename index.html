@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="theme-color" content="#f4efec" />
+<meta name="color-scheme" content="light" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icon-180.png" />
+<link rel="icon" type="image/png" href="./icon-192.png" />
+<title>Balance of Ann</title>
+<style>
+  :root { --ink:#1d1d1f; --muted:#5c5348; --faint:#8a8178; --accent:#b6552e; --card:#fff; --line:#e3d9c8; --bg:#f4efec; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:560px; margin:0 auto; padding:20px 16px 32px; }
+  .head { margin:18px 0 6px; }
+  .head h1 { font-size:26px; margin:0 0 4px; letter-spacing:-.01em; }
+  .head p { margin:0; color:var(--muted); font-size:14px; line-height:1.5; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 16px; margin-top:14px; }
+  /* gate */
+  .gate-intro { font-size:15px; color:var(--muted); line-height:1.55; margin:2px 0 12px; }
+  .pw-input { width:100%; font-size:20px; padding:14px 16px; border:1.5px solid rgba(0,0,0,.18); border-radius:12px; text-align:center; background:#fff; color:var(--ink); }
+  .pw-input:focus { outline:2px solid var(--accent); outline-offset:1px; }
+  .go { width:100%; margin-top:12px; font-size:17px; font-weight:600; padding:14px; border:none; border-radius:12px; background:var(--ink); color:#fff; cursor:pointer; }
+  .go[disabled] { opacity:.5; }
+  .err { color:#b3261e; font-size:15px; text-align:center; margin:10px 0 0; min-height:20px; }
+  .closing { font-size:13px; color:var(--faint); text-align:center; margin-top:16px; line-height:1.5; }
+  /* balance */
+  .bal-label { font-size:14px; color:var(--muted); margin:0 0 6px; }
+  .bal-num { font-size:clamp(30px, 10.5vw, 52px); font-weight:700; letter-spacing:-.02em; margin:0; color:var(--ink); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .bal-note { font-size:13.5px; color:var(--muted); line-height:1.55; margin:10px 0 0; }
+  .asof { font-size:12.5px; color:var(--faint); margin:10px 0 0; }
+  /* next change */
+  .next h2 { font-size:15px; margin:0 0 2px; color:var(--muted); font-weight:600; }
+  .next .when { font-size:17px; font-weight:700; margin:0 0 10px; }
+  .calc-row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; font-size:15px; padding:6px 0; border-bottom:1px dashed var(--line); }
+  .calc-row span:last-child { font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .calc-plus { color:var(--faint); padding-right:6px; }
+  .next-result { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-top:10px; font-size:16px; font-weight:700; }
+  .next-result span:last-child { font-variant-numeric:tabular-nums; }
+  /* history */
+  .hist h2 { font-size:15px; margin:0 0 8px; color:var(--muted); font-weight:600; }
+  .h-row { display:flex; align-items:baseline; gap:10px; padding:7px 0; border-bottom:1px solid #f0e9df; font-size:14px; line-height:1.4; }
+  .h-row:last-child { border-bottom:none; }
+  .h-date { color:var(--faint); font-size:12.5px; width:76px; flex:none; }
+  .h-label { flex:1; }
+  .h-amt { font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .h-amt.earned { color:#2e7d32; }
+  .h-note { font-size:12.5px; color:var(--faint); margin-top:10px; line-height:1.5; }
+  /* footer */
+  .version { margin:18px 0 8px; font-size:12px; color:#8a7f70; text-align:center; }
+  .version summary { cursor:pointer; list-style:none; }
+  .version p { margin:6px auto 0; max-width:480px; text-align:left; line-height:1.5; }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<script id="enc-data" type="application/json">{"v":1,"iter":600000,"salt":"kf+CF/cP9SmfdtQR3xMiFA==","iv":"PDNZo3aWKXiwBH3j","data":"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"}</script>
+<div class="wrap">
+  <div class="head">
+    <h1>Balance of Ann</h1>
+    <p id="subtitle">A private balance page.</p>
+  </div>
+
+  <!-- GATE -->
+  <section id="gate" class="card">
+    <p class="gate-intro">This page shows Ann's balance. Enter the password to open it. For privacy, you enter it each time you open the page.</p>
+    <form id="gate-form">
+      <input id="pw" class="pw-input" type="password" inputmode="text" autocomplete="current-password" placeholder="Password" aria-label="Password" />
+      <button id="unlock" class="go" type="submit">Unlock</button>
+      <p id="gate-err" class="err" role="alert"></p>
+    </form>
+    <p class="closing">All numbers on this page are encrypted. Only people with the password can see them.</p>
+  </section>
+
+  <!-- APP -->
+  <main id="app" hidden>
+    <section class="card">
+      <p class="bal-label">Current balance (Ann's view)</p>
+      <p class="bal-num" id="bal-num"></p>
+      <p class="bal-note" id="bal-note"></p>
+      <p class="asof" id="asof"></p>
+    </section>
+
+    <section class="card next" id="next-card">
+      <h2>Next change</h2>
+      <p class="when" id="next-when"></p>
+      <div id="next-adds"></div>
+      <div class="next-result"><span id="next-result-label"></span><span id="next-result"></span></div>
+    </section>
+
+    <section class="card hist">
+      <h2>Payment history</h2>
+      <div id="hist-list"></div>
+      <p class="h-note" id="hist-note"></p>
+    </section>
+
+    <details class="version">
+      <summary id="version-line"></summary>
+      <p>First version. Numbers come from Po's Google Sheet; the page is rebuilt when the sheet changes.</p>
+    </details>
+  </main>
+</div>
+
+<script>
+(function () {
+  var ITER_DEFAULT = 600000;
+  function fmt(n) {
+    var sign = n < 0 ? '-' : '+';
+    return sign + 'HK$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function fmtSigned(n) { return fmt(n); }
+  function b64ToBytes(b64) {
+    var bin = atob(b64), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  function render(data) {
+    document.getElementById('subtitle').textContent = "Ann's balance, from Po's Google Sheet.";
+    document.getElementById('bal-num').textContent = fmt(data.balance);
+    document.getElementById('bal-note').textContent = data.explainer;
+    document.getElementById('asof').textContent = 'As of ' + data.asOf + ' - from the Google Sheet, the source of truth.';
+    var nc = data.nextChange;
+    document.getElementById('next-when').textContent = nc.dateLabel;
+    var adds = document.getElementById('next-adds');
+    adds.innerHTML = '';
+    nc.adds.forEach(function (a) {
+      var row = document.createElement('div');
+      row.className = 'calc-row';
+      var l = document.createElement('span');
+      var plus = document.createElement('span'); plus.className = 'calc-plus'; plus.textContent = '+';
+      l.appendChild(plus); l.appendChild(document.createTextNode(a.label));
+      var r = document.createElement('span'); r.textContent = 'HK$' + a.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      row.appendChild(l); row.appendChild(r);
+      adds.appendChild(row);
+    });
+    document.getElementById('next-result-label').textContent = nc.resultLabel;
+    document.getElementById('next-result').textContent = fmt(nc.result);
+    var list = document.getElementById('hist-list');
+    list.innerHTML = '';
+    data.history.forEach(function (h) {
+      var row = document.createElement('div'); row.className = 'h-row';
+      var d = document.createElement('span'); d.className = 'h-date'; d.textContent = h.date;
+      var l = document.createElement('span'); l.className = 'h-label'; l.textContent = h.label;
+      var a = document.createElement('span'); a.className = 'h-amt ' + h.kind; a.textContent = fmtSigned(h.amount);
+      row.appendChild(d); row.appendChild(l); row.appendChild(a);
+      list.appendChild(row);
+    });
+    document.getElementById('hist-note').textContent = data.historyNote;
+    document.getElementById('version-line').textContent = 'v1.0 - updated 14 Nov 2026, 11:55am HKT';
+    document.getElementById('gate').hidden = true;
+    document.getElementById('app').hidden = false;
+    document.getElementById('bal-num').scrollIntoView({ block: 'start' });
+    window.scrollTo(0, 0);
+  }
+  function decryptAndRender(password) {
+    var enc = JSON.parse(document.getElementById('enc-data').textContent);
+    var salt = b64ToBytes(enc.salt), iv = b64ToBytes(enc.iv), data = b64ToBytes(enc.data);
+    var iter = enc.iter || ITER_DEFAULT;
+    return crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey'])
+      .then(function (base) {
+        return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: iter, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+      })
+      .then(function (key) { return crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, data); })
+      .then(function (plain) { return JSON.parse(new TextDecoder().decode(plain)); });
+  }
+  var form = document.getElementById('gate-form');
+  var btn = document.getElementById('unlock');
+  var errEl = document.getElementById('gate-err');
+  var cached = null;
+  try { cached = sessionStorage.getItem('boa-data'); } catch (e) {}
+  if (cached) { try { render(JSON.parse(cached)); } catch (e) {} }
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var pw = document.getElementById('pw').value;
+    if (!pw || btn.disabled) return;
+    if (!window.crypto || !crypto.subtle) { errEl.textContent = 'This browser is too old to open the page.'; return; }
+    btn.disabled = true; btn.textContent = 'Unlocking...'; errEl.textContent = '';
+    decryptAndRender(pw).then(function (data) {
+      try { sessionStorage.setItem('boa-data', JSON.stringify(data)); } catch (e) {}
+      render(data);
+    }).catch(function () {
+      errEl.textContent = 'Wrong password, try again.';
+      btn.disabled = false; btn.textContent = 'Unlock';
+      document.getElementById('pw').select();
+    });
+  });
+})();
+</script>
+</body>
+</html>
